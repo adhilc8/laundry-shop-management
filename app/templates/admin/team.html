@@ -1,0 +1,15 @@
+{% extends 'base.html' %}{% block content %}
+<section class="dashboard-section"><div class="container">
+<span class="eyebrow">TEAM MANAGEMENT</span><h1>Staff & delivery agents</h1>
+<div class="row g-4 mt-1">
+<div class="col-lg-5"><form method="post" class="panel"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<h2 class="h4">Create team account</h2>
+<label>Full name</label><input class="form-control mb-2" name="name" required>
+<label>Phone</label><input class="form-control mb-2" type="tel" name="phone" pattern="\+?[0-9]{7,15}" title="Enter 7–15 digits, optionally beginning with +" required>
+<label>Email (optional)</label><input class="form-control mb-2" type="email" name="email">
+<label>Role</label><select class="form-select mb-2" name="role"><option value="staff">Laundry staff</option><option value="delivery_agent">Delivery agent</option></select>
+<label>Temporary password</label><input class="form-control mb-3" type="password" name="password" minlength="8" required>
+<button class="btn btn-gold w-100">Create account</button></form></div>
+<div class="col-lg-7"><div class="panel"><h2 class="h4">Current team</h2>
+{% for p in people %}<div class="d-flex justify-content-between align-items-center border-bottom py-3 gap-2"><div><b>{{ p.name }}</b><small class="d-block text-muted">{{ p.phone }} · {{ p.email or 'No email' }}</small><span class="status mt-2">{{ p.role.replace('_',' ')|title }}</span></div><form method="post" action="{{ url_for('admin.delete_team_member', user_id=p.id) }}" onsubmit="return confirm('Delete {{ p.name }}? Assigned orders will be moved to a free team member when available.');"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn btn-outline-danger btn-sm">Delete</button></form></div>{% else %}<p>No team accounts yet.</p>{% endfor %}
+</div></div></div></div></section>{% endblock %}

@@ -1,0 +1,11 @@
+.env
+venv/
+__pycache__/
+*.pyc
+instance/
+
+# Uploaded customer instruction photos
+instance/uploads/
+app/static/uploads/
+# Generated distributable
+*_project.zip
